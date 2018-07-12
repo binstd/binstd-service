@@ -1,11 +1,11 @@
 const router = require('koa-router')()
 
-router.prefix('/users')
+router.prefix('/api')
 
 router.get('/', function (ctx, next) {
   console.log(ctx.request.body);
   console.log(ctx.query);
-  ctx.body = ctx.query.m
+  ctx.body = 'this is !'
 })
 
 router.get('/bar', function (ctx, next) {
