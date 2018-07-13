@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "ali-rds": "^3.0.1",
+    "crypto": "^1.0.1",
     "debug": "^3.1.0",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
@@ -21,6 +22,7 @@
     "koa-send": "^5.0.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.1.4",
+    "moment": "^2.22.2",
     "pug": "^2.0.0-rc.1"
   },
   "devDependencies": {
