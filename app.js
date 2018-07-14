@@ -9,13 +9,8 @@ const logger = require('koa-logger')
 const index = require('./app/index')
 const api = require('./app/api')
 
-// error handler
 onerror(app)
 
-// middlewares
-// app.use(bodyparser({
-//   enableTypes:['json', 'form', 'text']
-// }))
 app.use(bodyParser());
 app.use(json())
 app.use(logger())
