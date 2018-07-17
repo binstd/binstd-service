@@ -5,11 +5,13 @@ var moment = require('moment');
 var axios = require('axios');
 router.prefix('/api')
 
-router.get('/', function (req, next) {
-  console.log(req.request.body);
-  console.log(req.query);
-  req.body = 'this is !'
-})
+
+// router.get('/', function (req, next) {
+//   console.log(req.request.body);
+//   console.log(req.query);
+//   // req.body = 'this is !'
+//    serve("index.html");
+// })
 
 router.get('/contact', async (req, next) => {
   var keyinfo, resultData = {};
@@ -197,7 +199,6 @@ router.post('/updatepaypassword', async (req, res) => {
   console.log(keyinfo);
   req.body = keyinfo;
 });
-
 
 router.get('/user', async (req, res) => {
   let rows = await db.select('tags', { columns: ['id', 'name', 'feature_image', 'slug', 'all_child'] });
