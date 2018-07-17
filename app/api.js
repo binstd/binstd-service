@@ -2,7 +2,7 @@ const router = require('koa-router')()
 var db = require('./utils/mysql');
 var crypto = require('crypto');
 var moment = require('moment');
-
+var axios = require('axios');
 router.prefix('/api')
 
 router.get('/', function (req, next) {
@@ -208,8 +208,8 @@ router.get('/user', async (req, res) => {
 
 router.get('/verify', async (req, res) => {
   let rows = {};
-  
-  rows['code'] =  Math.random().toString().slice(-6);
+  let paramMsg ={};
+  rows['code'] =  Math.random().toString().slice(-4);
   console.log(rows);
   var today = moment();
   var time = today.format('YYYYMMDDHHmmss'); /*现在的年*/
@@ -219,9 +219,29 @@ router.get('/verify', async (req, res) => {
   let md5password = crypto.createHash('md5').update(password).digest('hex');
   let msgpass = crypto.createHash('md5').update(md5password + time).digest('hex');
   console.log('msgpass:', msgpass);
-
-  
-
+  paramMsg['username'] = "proginn1";
+  paramMsg['tkey'] = time;
+  paramMsg['password'] = msgpass;
+  paramMsg['mobile'] = req.query.telephone;
+  paramMsg['content'] = rows['code'];
+  paramMsg['productid'] = '170831';
+  console.log(paramMsg);
+  let response = await axios.get("http://www.ztsms.cn/sendNSms.do", {
+      params: paramMsg
+   });
+  //  console.log(response.data);
+  //  if(response.data.substr(0,1) == 1) {
+  //    rows['status'] = 1;
+  //  }else {
+  //   rows['status'] = 0;
+  //  }
+    // .then(response => {
+    // next(vm =>{
+    //   localStorage.clear();
+    //   vm.getData(response.data);
+    //   vm.listSelected(0);
+    // });
+  // });
   req.body = rows;
 });
 
