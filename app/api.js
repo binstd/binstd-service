@@ -1,4 +1,4 @@
-const router = require('koa-router')()
+const router = require('koa-router')();
 var db = require('./utils/mysql');
 var crypto = require('crypto');
 var moment = require('moment');
@@ -13,8 +13,9 @@ router.prefix('/api')
 //    serve("index.html");
 // })
 
-router.get('/contact', async (req, next) => {
-  var keyinfo, resultData = {};
+router.get('/contact', async(req, next) => {
+  var keyinfo = [];
+  let resultData = {};
   let uid = req.query.uid;
   if (req.query.uid) {
     keyinfo = await db.select('user_contact', {
@@ -23,6 +24,7 @@ router.get('/contact', async (req, next) => {
       }
     });
   }
+  console.log(keyinfo);
   if (keyinfo.length != 0) {
     resultData = { 'status': 1, 'data': keyinfo };
   } else {

@@ -1,4 +1,6 @@
-const router = require('koa-router')()
+const router = require('koa-router')();
+
+router.prefix('/index')
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
@@ -15,5 +17,17 @@ router.get('/json', async (ctx, next) => {
     title: 'koa2 json'
   }
 })
+
+router.get('/HttpError', (ctx, next) => {
+    throw new HttpError(HTTP_CODE.FORBIDDEN)
+  })
+  
+  const somefunc = async (token) => {
+    const res = await tokenExpire(token)
+    if (res) {
+      throw new CustomError(CUSTOM_CODE.SOME_CUSTOM_ERROR)
+    }
+    // do something
+  }
 
 module.exports = router
