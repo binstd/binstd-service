@@ -1,6 +1,8 @@
 const router = require('koa-router')();
 var {erc20} = require('./utils/abi/ethAbi');
 var Web3 = require('web3');
+const fs = require('fs');
+var path = require('path');
 // var isconnecteth = require('./utils/bc');
 import validator from 'validator';
 
@@ -120,4 +122,9 @@ router.get('/gasprice', async(ctx, next) => {
     // ctx.body  = result;
 })
 
+router.get('/pay', async(ctx, next) => {
+    ctx.type = 'html';
+    ctx.body = await fs.createReadStream(path.resolve(__dirname, '..') + '/views/index.html');
+    // ctx.body  = result;
+})
 module.exports = router

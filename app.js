@@ -6,7 +6,6 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyParser = require('koa-bodyparser')
 const logger = require('koa-logger')
-
 const index = require('./app/index')
 const api = require('./app/api')
 const ethapi = require('./app/ethapi')
@@ -78,7 +77,13 @@ app.use((ctx, next) => {
 
 app.use(async (ctx, next) => {
   await next()
-  ctx.body = format(ctx.body)
+  console.log(ctx.body._readableState);
+  if(ctx.body._readableState){
+    ctx.body = ctx.body;
+  }else{
+    ctx.body = format(ctx.body);
+  }
+
 })
 
 // logger
