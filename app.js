@@ -12,6 +12,7 @@ const ethapi = require('./app/ethapi')
 var serve = require('koa-static');
 var cors = require('koa2-cors');
 // const ethapi = require('./app/utils/')
+import constants from './app/utils/response/constants'
 
 import {
     CustomError,
@@ -19,30 +20,28 @@ import {
 } from './app/utils/response/customError'
 
 import {
-format
+    format
 } from '././app/utils/response/response'
 
-// 跨域支持
 
 /**
  * 
  * 跨域
  */
-app.use(cors({
-    origin: function (ctx) {
-        if (ctx.url === '/test') {
-            return "*"; // 允许来自所有域名请求
-        }
-        //      return 'http://localhost:8080'; / 这样就能只允许 http://localhost:8080 这个域名的请求了
-    },
-    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-    maxAge: 5,
-    credentials: true,
-    allowMethods: ['GET', 'POST', 'DELETE'],
-    allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-}))
-
-
+app.use(cors())
+// app.use(cors({
+//     origin: function (ctx) {
+//         if (ctx.url === '/test') {
+//             return "*"; // 允许来自所有域名请求
+//         }
+//         //      return 'http://localhost:8080'; / 这样就能只允许 http://localhost:8080 这个域名的请求了
+//     },
+//     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+//     maxAge: 5,
+//     credentials: true,
+//     allowMethods: ['GET', 'POST', 'DELETE'],
+//     allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+// }))
 
 onerror(app)
 app.use(bodyParser());
@@ -57,33 +56,42 @@ app.use(views(__dirname + '/views', {
 
 app.use((ctx, next) => {
     return next().catch((err) => {
-      let code = 500
-      let msg = '异常错误'
-  
-      if (err instanceof CustomError || err instanceof HttpError) {
-        const res = err.getCodeMsg()
-        ctx.status = err instanceof HttpError ? res.code : 200
-        code = res.code
-        msg = res.msg
-      } else {
-        ctx.status = code
-        console.error('err', err)
-      }
-      ctx.body = format({}, code, msg)
+        let code = 500
+        let msg = '异常错误'
+
+        if (err instanceof CustomError || err instanceof HttpError) {
+            const res = err.getCodeMsg()
+            ctx.status = err instanceof HttpError ? res.code : 200
+            code = res.code
+            msg = res.msg
+
+        } else {
+            ctx.status = code
+            console.error('err', err)
+        }
+         ctx.body = format({}, code, msg)
     })
 })
+
 // check request param
 // require('koa-validate')(app)
-
 app.use(async (ctx, next) => {
-  await next()
-  console.log(ctx.body._readableState);
-  if(ctx.body._readableState){
-    ctx.body = ctx.body;
-  }else{
-    ctx.body = format(ctx.body);
-  }
+    // await next()
+    try {
+        await next();  // next 是一个函数，用 await 替代 yield
+    } catch (err) {
+        if(err.message == 'Authentication Error'){
+            throw new CustomError(constants.CUSTOM_CODE.AUTH_ERROR)
+        }
+        ctx.body = { message: err.message };
+        ctx.status = err.status || 500;
+    }
+    if (ctx.path.includes('/api/')) {
+        ctx.body = ctx.body;
 
+    } else {
+        ctx.body = format(ctx.body);
+    }
 })
 
 // logger

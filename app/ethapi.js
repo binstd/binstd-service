@@ -61,26 +61,17 @@ router.get('/balance', async(ctx, next) => {
     if(!web3.utils.isAddress(ctx.query.contract_address)){
         throw new CustomError(constants.CUSTOM_CODE.CONTRACT_ADDRESS_ERROR)
     }
-    
     // web3.utils.isAddress
     let result  = {} ;
   
     let contract = new web3.eth.Contract(erc20, ctx.query.contract_address);
     let balanceof  = await contract.methods.balanceOf(ctx.query.address).call();
-    // let decimals = await contract.methods.decimals().call();
-    // let name = await contract.methods.name().call();
-    // let symbol = await contract.methods.symbol().call();
+   
     console.log(balanceof);
-    // console.log(decimals);
-    // throw new CustomError(constants.CUSTOM_CODE.WALLET_ADDRESS_ERROR)
+
     ctx.body = {
-        // name:web3.utils.hexToUtf8(name),
-        // symbol:web3.utils.hexToUtf8(symbol),
-        // amount:balanceof/Math.pow(10,decimals),
         balance: balanceof,
-        // decimals: decimals
     }
-    // ctx.body  = result;
 })
 
 
@@ -97,7 +88,6 @@ router.get('/tokeninfo', async(ctx, next) => {
         throw new CustomError(constants.CUSTOM_CODE.CONTRACT_ADDRESS_ERROR)
     }
     
-    // web3.utils.isAddress
     let result  = {} ;
     let contract = new web3.eth.Contract(erc20, ctx.query.contract_address);
     let decimals = await contract.methods.decimals().call();
@@ -110,7 +100,6 @@ router.get('/tokeninfo', async(ctx, next) => {
         symbol:web3.utils.hexToUtf8(symbol),
         decimals: decimals
     }
-    // ctx.body  = result;
 })
 
 router.get('/gasprice', async(ctx, next) => {
