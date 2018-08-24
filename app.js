@@ -54,6 +54,7 @@ app.use(views(__dirname + '/views', {
 }))
 
 
+
 app.use((ctx, next) => {
     return next().catch((err) => {
         let code = 500
@@ -86,11 +87,16 @@ app.use(async (ctx, next) => {
         ctx.body = { message: err.message };
         ctx.status = err.status || 500;
     }
-    if (ctx.path.includes('/api/')) {
+    if (ctx.path.includes('/api/') ) {
         ctx.body = ctx.body;
-
+        
     } else {
-        ctx.body = format(ctx.body);
+        if(ctx.path.includes('/.well-known/pki-validation/fileauth.txt')){
+            ctx.body  = '201808230208244ksp05n3ypyvvmkd3yx2ap1s41im2mc4g4hji3tfhwde4f4hmo';
+        }else{
+            ctx.body = format(ctx.body);
+        }
+      
     }
 })
 
