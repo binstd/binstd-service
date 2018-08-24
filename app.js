@@ -100,7 +100,7 @@ app.use(async (ctx, next) => {
     }
 })
 
-// logger
+// logger scp root@47.254.23.112:~/code/1_api.binstd.com_bundle.crt  /etc/nginx
 app.use(async (ctx, next) => {
     const start = new Date()
     await next()
