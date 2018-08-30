@@ -10,12 +10,14 @@ function CustomError (code, msg) {
   this.code = code
   this.msg = msg || ERROR_MSG[code] || 'unknown error'
 
+  console.log('mmmmmmmmmmm');
   this.getCodeMsg = function () {
     return {
       code: this.code,
       msg: this.msg
     }
   }
+
 }
 util.inherits(CustomError, Error)
 

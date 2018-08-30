@@ -50,6 +50,7 @@ router.get('/', async (ctx, next) => {
  * 
  */ 
 router.get('/balance', async(ctx, next) => {
+    console.log('222');
     let web3 = new Web3(new Web3.providers.HttpProvider(rpc_url));
     let my = "0xD551234Ae421e3BCBA99A0Da6d736074f22192FF"
     let eos_contract_address = "0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0"
@@ -59,6 +60,7 @@ router.get('/balance', async(ctx, next) => {
     }
     // 合约地址
     if(!web3.utils.isAddress(ctx.query.contract_address)){
+        console.log('ctx.query.contract_address');
         throw new CustomError(constants.CUSTOM_CODE.CONTRACT_ADDRESS_ERROR)
     }
     // web3.utils.isAddress
@@ -72,6 +74,7 @@ router.get('/balance', async(ctx, next) => {
     ctx.body = {
         balance: balanceof,
     }
+    next();
 })
 
 

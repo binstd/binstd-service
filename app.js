@@ -23,7 +23,6 @@ import {
     format
 } from '././app/utils/response/response'
 
-
 /**
  * 
  * 跨域
@@ -59,8 +58,9 @@ app.use((ctx, next) => {
     return next().catch((err) => {
         let code = 500
         let msg = '异常错误'
-
+        // consooe.log('22222!!!!!!weism?');
         if (err instanceof CustomError || err instanceof HttpError) {
+            consooe.log('2=======');
             const res = err.getCodeMsg()
             ctx.status = err instanceof HttpError ? res.code : 200
             code = res.code
@@ -77,26 +77,57 @@ app.use((ctx, next) => {
 // check request param
 // require('koa-validate')(app)
 app.use(async (ctx, next) => {
+
     // await next()
     try {
         await next();  // next 是一个函数，用 await 替代 yield
     } catch (err) {
+        let code = 500
+        let msg = '异常错误'
+        
         if(err.message == 'Authentication Error'){
             throw new CustomError(constants.CUSTOM_CODE.AUTH_ERROR)
+            ctx.body = { message: err.message };
+            ctx.status = err.status || 500;
+            return;
         }
-        ctx.body = { message: err.message };
-        ctx.status = err.status || 500;
+    
+        if (err instanceof CustomError || err instanceof HttpError) {
+            // console.log('22222!!!!!!weism?');
+            const res = err.getCodeMsg()
+            ctx.status = err instanceof HttpError ? res.code : 200
+            code = res.code
+            msg = res.msg
+
+        } else {
+            
+            ctx.status = code
+            console.error('err', err)
+        }
+        ctx.body = format({}, code, msg)
+        return;
     }
-    if (ctx.path.includes('/api/') ) {
+
+    // if (ctx.path.includes('/ethapi/pay/')) {
+    //     // console.log('2222');
+    //     ctx.body = ctx.body;
+    //     return;
+    // }
+
+     // 特殊处理
+     if (ctx.path.includes('/api/') ) {
+        // console.log('2222');
         ctx.body = ctx.body;
         
     } else {
         if(ctx.path.includes('/.well-known/pki-validation/fileauth.txt')){
+
             ctx.body  = '201808230208244ksp05n3ypyvvmkd3yx2ap1s41im2mc4g4hji3tfhwde4f4hmo';
+
         }else{
+
             ctx.body = format(ctx.body);
         }
-      
     }
 })
 
