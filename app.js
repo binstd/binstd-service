@@ -28,19 +28,6 @@ import {
  * 跨域
  */
 app.use(cors())
-// app.use(cors({
-//     origin: function (ctx) {
-//         if (ctx.url === '/test') {
-//             return "*"; // 允许来自所有域名请求
-//         }
-//         //      return 'http://localhost:8080'; / 这样就能只允许 http://localhost:8080 这个域名的请求了
-//     },
-//     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-//     maxAge: 5,
-//     credentials: true,
-//     allowMethods: ['GET', 'POST', 'DELETE'],
-//     allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-// }))
 
 onerror(app)
 app.use(bodyParser());
@@ -48,19 +35,15 @@ app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/views'))
 
-app.use(views(__dirname + '/views', {
-    extension: 'pug'
-}))
-
-
-
+// app.use(views(__dirname + '/views', {
+//     extension: 'pug'
+// }))
 app.use((ctx, next) => {
     return next().catch((err) => {
         let code = 500
         let msg = '异常错误'
         // consooe.log('22222!!!!!!weism?');
         if (err instanceof CustomError || err instanceof HttpError) {
-            consooe.log('2=======');
             const res = err.getCodeMsg()
             ctx.status = err instanceof HttpError ? res.code : 200
             code = res.code
@@ -74,11 +57,9 @@ app.use((ctx, next) => {
     })
 })
 
-// check request param
-// require('koa-validate')(app)
+
 app.use(async (ctx, next) => {
 
-    // await next()
     try {
         await next();  // next 是一个函数，用 await 替代 yield
     } catch (err) {
@@ -100,32 +81,27 @@ app.use(async (ctx, next) => {
             msg = res.msg
 
         } else {
-            
             ctx.status = code
-            console.error('err', err)
         }
+        
         ctx.body = format({}, code, msg)
         return;
     }
 
-    // if (ctx.path.includes('/ethapi/pay/')) {
-    //     // console.log('2222');
-    //     ctx.body = ctx.body;
-    //     return;
-    // }
 
      // 特殊处理
-     if (ctx.path.includes('/api/') ) {
-        // console.log('2222');
+     if (ctx.path.includes('/api/') || ctx.path.includes('/ethapi/pay')) {
+         console.log(' \n =====2222');
         ctx.body = ctx.body;
         
     } else {
+        
         if(ctx.path.includes('/.well-known/pki-validation/fileauth.txt')){
 
             ctx.body  = '201808230208244ksp05n3ypyvvmkd3yx2ap1s41im2mc4g4hji3tfhwde4f4hmo';
 
         }else{
-
+            console.log('=== \n \n =======: \n',ctx.body);
             ctx.body = format(ctx.body);
         }
     }

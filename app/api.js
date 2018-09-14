@@ -7,18 +7,16 @@ router.prefix('/api')
 import ethUtil from 'ethereumjs-util';
 import jwt from 'jsonwebtoken';
 import koajwt from 'koa-jwt';
-// const koajwt = require('koa-jwt');
 
 import sequelize from './db';
 import config from './utils/config';
 const api_users = sequelize.models.api_users;
-
+const user_dapp_info = sequelize.models.user_dapp_info;
 import {
     CustomError,
     HttpError
 } from './utils/response/customError'
 import constants from './utils/response/constants'
-
 
 router.get('/contact', async (req, next) => {
     var keyinfo = [];
@@ -100,6 +98,8 @@ router.get('/signup', async (req, next) => {
     req.body = result;
 })
 
+
+
 //登陆
 router.post('/signin', async (req, next) => {
     var keyinfo, resultData = {};
@@ -123,7 +123,7 @@ router.post('/signin', async (req, next) => {
     req.body = await resultData
 })
 
-//注册
+//添加联系人
 router.post('/addcontact', async (req, next) => {
     let result = {
         status: 0,
@@ -159,24 +159,20 @@ router.post('/addcontact', async (req, next) => {
 })
 
 
-/* get user name */
+/* 更改用户名 */
 router.post('/updatename', async (req, next) => {
-    // console.log('get请求参数对象 :',req.query);  
     var keyinfo = {}
     let uid = req.query.uid;
     let username = req.query.username;
     let row = {
         username: username
     };
-    // console.log('p:', username);
-    // console.log('是我呀');
-    // console.log('row:', row);
+ 
     if (req.query.username && req.query.uid) {
 
         keyinfo = await mysql.update('user', row, { where: { uid: uid } });
     }
     console.log(keyinfo);
-
     req.body = keyinfo;
 });
 
@@ -220,6 +216,10 @@ router.get('/user', async (req, res) => {
     // res.send(rows);
 });
 
+
+
+
+// 短信接口对接
 router.get('/verify', async (req, res) => {
     let rows = {};
     let paramMsg = {};
@@ -252,15 +252,20 @@ router.get('/bar', function (ctx, next) {
 })
 
 
-router.get('/users', async (ctx, next) => {
 
-    const whereClause = ctx.query &&
-        ctx.query.publicAddress && {
+/**
+ * 
+ * 新世界 
+ */
+
+// 根据钱包地址获取用户
+router.get('/users', async (ctx, next) => {
+    const whereClause = ctx.query &&ctx.query.publicAddress && {
             where: { publicAddress: ctx.query.publicAddress }
-        };
-    // console.log('\n where-Clause', whereClause);  
+    };
     let rows = await mysql.select('api_users', whereClause);
     ctx.body = rows;
+    console.log("router.get('/users', async (ctx, next) => {");
 })
 
 
@@ -274,11 +279,10 @@ router.get('/users/:userId', koajwt({ secret: config.secret }), async (ctx, next
     ctx.body = await api_users.findById(ctx.params.userId);
 })
 
-
 // 提交用户修改资料
 router.patch('/users/:userId', koajwt({ secret: config.secret }), async (ctx, next) => {
-    console.log('request....body:', ctx.request.body);
-    console.log(ctx.state.user.payload.id);
+    // console.log('request....body:', ctx.request.body);
+    // console.log(ctx.state.user.payload.id);
     if (ctx.state.user.payload.id !== +ctx.params.userId) {
         throw new HttpError(constants.HTTP_CODE.UNAUTHORIZED,
             `You can can only access yourself`);
@@ -291,14 +295,13 @@ router.patch('/users/:userId', koajwt({ secret: config.secret }), async (ctx, ne
 })
 
 
-
 //  提交增加
 router.post('/users', async(ctx, next) => {
     console.log('request.body:', ctx.request.body);
     ctx.body = await api_users.create(ctx.request.body);   
 })
 
-// /api/auth post
+//  进行授权 api/auth post
 router.post('/auth', async (ctx, next) => {
     // console.log(ctx.request.body);
     const { signature, publicAddress } = ctx.request.body;
@@ -312,10 +315,7 @@ router.post('/auth', async (ctx, next) => {
     })
 
         .then(api_users => {
-            console.log('::::::api_users::::::: \n :', api_users);
-            console.log('api_users.nonce:::', api_users.nonce);
             const msg = `I am signing: ${api_users.nonce}`;
-
             const msgBuffer = ethUtil.toBuffer(msg);
             const msgHash = ethUtil.hashPersonalMessage(msgBuffer);
             const signatureBuffer = ethUtil.toBuffer(signature);
@@ -366,4 +366,35 @@ router.post('/auth', async (ctx, next) => {
     ctx.body = { accessToken };
 })
 
+
+// 获取指定钱包地址用户的合约信息
+router.get('/dapp/:publicaddress', koajwt({ secret: config.secret }), async (ctx, next) => {
+    console.log('=========!');    
+    console.log(ctx.state.user.payload.publicAddress);
+    if (ctx.state.user.payload.publicAddress !== ctx.params.publicaddress) {
+        throw new HttpError(constants.HTTP_CODE.UNAUTHORIZED, 
+            `You can can only access yourself`);
+    }
+    ctx.body = await user_dapp_info.findAll({ where: { publicAddress: ctx.params.publicaddress} });
+    // user_dapp_info.findById(ctx.params.userId);
+})
+
+
+//  提交增加
+router.post('/dapp', koajwt({ secret: config.secret }), async(ctx, next) => {
+    console.log('3232323232:::', ctx.request.body);
+    // if (ctx.state.user.payload.publicAddress !== +ctx.params.publicaddress) {
+    //     throw new HttpError(constants.HTTP_CODE.UNAUTHORIZED, 
+    //         `You can can only access yourself`);
+    // }
+    ctx.body = await user_dapp_info.create(ctx.request.body);   
+})
+
+
 module.exports = router
+
+
+
+
+
+// findAll({ where: { name: 'A Project' } })

@@ -3,11 +3,10 @@ var {erc20} = require('./utils/abi/ethAbi');
 var Web3 = require('web3');
 const fs = require('fs');
 var path = require('path');
-// var isconnecteth = require('./utils/bc');
+
 import validator from 'validator';
 
-import {blockchainconfig} from './utils/bcconfig';
-import {isconnecteth, getweb3} from './utils/bc';
+
 import {
     CustomError,
     HttpError
@@ -15,15 +14,12 @@ import {
 import constants from './utils/response/constants'
 
 const rpc_url = 'https://mainnet.infura.io/v3/0045c2ce288a4e649a8f39f3d19446b4';
-// var blockchainconfig = require('./utils/bcconfig');
 
 
 router.prefix('/ethapi');
 
 router.get('/', async (ctx, next) => {
-//   await ctx.render('index', {
-//     title: 'api eth'
-//   })
+
 })
 
 
@@ -77,7 +73,7 @@ router.get('/balance', async(ctx, next) => {
     next();
 })
 
-
+// token详情
 router.get('/tokeninfo', async(ctx, next) => {
     let web3 = new Web3(new Web3.providers.HttpProvider(rpc_url));
     let my = "0xD551234Ae421e3BCBA99A0Da6d736074f22192FF"
@@ -105,6 +101,7 @@ router.get('/tokeninfo', async(ctx, next) => {
     }
 })
 
+// 获取gas价格
 router.get('/gasprice', async(ctx, next) => {
     let web3 = new Web3(new Web3.providers.HttpProvider(rpc_url));
     let gasprice = await web3.eth.getGasPrice();
@@ -114,9 +111,10 @@ router.get('/gasprice', async(ctx, next) => {
     // ctx.body  = result;
 })
 
+// 支付
 router.get('/pay', async(ctx, next) => {
     ctx.type = 'html';
-    ctx.body = await fs.createReadStream(path.resolve(__dirname, '..') + '/views/index.html');
+    ctx.body = await fs.createReadStream(path.resolve(__dirname, '..') + '/views/paytoken/index.html');
     // ctx.body  = result;
 })
 module.exports = router

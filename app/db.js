@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 
 import api_users from './models/user.model';
-
+import user_dapp_info from './models/dapp.info.model'
 // const sequelize = new Sequelize(null, null, null, {
 //   dialect: 'sqlite',
 //   storage: '/tmp/db.sqlite',
@@ -21,6 +21,7 @@ const sequelize = new Sequelize('wallet', 'admin', 'wly3125965', {
 
 // Init all models
 api_users(sequelize);
+user_dapp_info(sequelize);
 
 sequelize.sync();
 
