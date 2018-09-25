@@ -23,12 +23,7 @@ import {
     format
 } from '././app/utils/response/response'
 
-/**
- * 
- * 跨域
- */
 app.use(cors())
-
 onerror(app)
 app.use(bodyParser());
 app.use(json())

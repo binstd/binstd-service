@@ -78,16 +78,13 @@ router.get('/tokeninfo', async(ctx, next) => {
     let web3 = new Web3(new Web3.providers.HttpProvider(rpc_url));
     let my = "0xD551234Ae421e3BCBA99A0Da6d736074f22192FF"
     let eos_contract_address = "0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0"
-    // 钱包地址校正
-    if(!web3.utils.isAddress(ctx.query.address)){
-        throw new CustomError(constants.CUSTOM_CODE.WALLET_ADDRESS_ERROR)
-    }
+   
+
     // 合约地址
     if(!web3.utils.isAddress(ctx.query.contract_address)){
         throw new CustomError(constants.CUSTOM_CODE.CONTRACT_ADDRESS_ERROR)
     }
     
-    let result  = {} ;
     let contract = new web3.eth.Contract(erc20, ctx.query.contract_address);
     let decimals = await contract.methods.decimals().call();
     let name = await contract.methods.name().call();

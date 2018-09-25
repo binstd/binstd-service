@@ -12,6 +12,7 @@ import sequelize from './db';
 import config from './utils/config';
 const api_users = sequelize.models.api_users;
 const user_dapp_info = sequelize.models.user_dapp_info;
+const user_contact = sequelize.models.user_contact;
 import {
     CustomError,
     HttpError
@@ -97,8 +98,6 @@ router.get('/signup', async (req, next) => {
     console.log('登陆后返回:', result);
     req.body = result;
 })
-
-
 
 //登陆
 router.post('/signin', async (req, next) => {
@@ -216,9 +215,6 @@ router.get('/user', async (req, res) => {
     // res.send(rows);
 });
 
-
-
-
 // 短信接口对接
 router.get('/verify', async (req, res) => {
     let rows = {};
@@ -251,13 +247,10 @@ router.get('/bar', function (ctx, next) {
     ctx.body = 'this is a users/bar response'
 })
 
-
-
 /**
  * 
  * 新世界 
  */
-
 // 根据钱包地址获取用户
 router.get('/users', async (ctx, next) => {
     const whereClause = ctx.query &&ctx.query.publicAddress && {
@@ -391,10 +384,40 @@ router.post('/dapp', koajwt({ secret: config.secret }), async(ctx, next) => {
 })
 
 
+
+// 获取用户信息
+router.get('/usercontact/:address', async(ctx, next) => {
+    
+    // if (ctx.state.user.payload.publicAddress !== +ctx.params.address) {
+    //     throw new HttpError(constants.HTTP_CODE.UNAUTHORIZED, 
+    //         `You can can only access yourself`);
+    // }
+    console.log('\n ctx.params.address:', ctx.params.address);
+    ctx.body = await user_contact.findAll({ where: { address: ctx.params.address} });
+    // ctx.body = await api_users.findById(ctx.params.userId);
+})
+
+router.post('/usercontact', async(ctx, next) => {
+    console.log('\n ctx.request.body:', ctx.request.body);
+  
+    ctx.body = await user_contact.create(ctx.request.body);   
+})
+
+// 提交用户修改资料
+router.patch('/users/:userId', koajwt({ secret: config.secret }), async (ctx, next) => {
+
+    if (ctx.state.user.payload.id !== +ctx.params.userId) {
+        throw new HttpError(constants.HTTP_CODE.UNAUTHORIZED,
+            `You can can only access yourself`);
+    }
+
+    ctx.body = await api_users.findById(ctx.params.userId)
+        .then(api_users => {
+            Object.assign(api_users, ctx.request.body);
+            return api_users.save();
+    });
+})
+
 module.exports = router
-
-
-
-
 
 // findAll({ where: { name: 'A Project' } })
