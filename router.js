@@ -1,5 +1,9 @@
-const router = require('koa-router')()
-const HomeController = require('./controller/home')
+// const router = require('koa-router')()
+import Router from 'koa-router';
+import HomeController from './controller/home'
+
+const router = Router();
+// const HomeController = require('./controller/home')
 
 module.exports = (app) => {
     router.get( '/', HomeController.index )
