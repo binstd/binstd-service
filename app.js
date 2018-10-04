@@ -4,19 +4,16 @@ require("babel-core/register")({
 });
 require("babel-polyfill");   //引入这个文件babel-polyfill很重要，否则出现错误
 
+
 const Koa = require('koa')
-// import constants from './app/utils/response/constants'
-// import Koa from 'Koa'
-const bodyParser = require('koa-bodyparser')
 const app = new Koa()
-// import {router} from './router'
 const router = require('./router');
 
-app.use(bodyParser());
+//加载中间件
+const middleware = require('./middleware')
+middleware(app)
 
 router(app);
- 
-
 app.listen(3000, () => {
   console.log('server is running at http://localhost:3000')
 })

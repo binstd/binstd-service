@@ -10,7 +10,11 @@ module.exports = {
     
     homeParams: async(ctx, next) => {
       console.log(ctx.params)
-      ctx.response.body = '<h1>HOME page /:id/:name</h1>'
+      ctx.send({
+        status: 'success',
+        data: '流量'
+      })
+    //   ctx.response.body = '<h1>HOME page /:id/:name</h1>'
     },
 
     login: async(ctx, next) => {
