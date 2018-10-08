@@ -52,7 +52,6 @@ app.use((ctx, next) => {
     })
 })
 
-
 app.use(async (ctx, next) => {
 
     try {
@@ -114,11 +113,8 @@ app.use(async (ctx, next) => {
 app.use(index.routes(), index.allowedMethods())
 app.use(api.routes(), api.allowedMethods())
 app.use(ethapi.routes(), ethapi.allowedMethods())
-// app.get("/", function * (next){
-//   serve(__dirname + "/views/index.html");
-// });
 
-// error-handling
+
 app.on('error', (err, ctx) => {
     console.error('server error', err, ctx)
 });

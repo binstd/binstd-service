@@ -1,11 +1,12 @@
 const router = require('koa-router')();
 var {erc20} = require('./utils/abi/ethAbi');
+// const tokenjson = require('./utils/abi/ERC20Token.json');
+import tokenjson  from './utils/abi/erc20.json'
 var Web3 = require('web3');
 const fs = require('fs');
 var path = require('path');
 
 import validator from 'validator';
-
 
 import {
     CustomError,
@@ -13,15 +14,14 @@ import {
   } from './utils/response/customError'
 import constants from './utils/response/constants'
 
-const rpc_url = 'https://mainnet.infura.io/v3/0045c2ce288a4e649a8f39f3d19446b4';
-
+// const rpc_url = 'https://mainnet.infura.io/v3/0045c2ce288a4e649a8f39f3d19446b4';
+const rpc_url = 'https://ropsten.infura.io/v3/0045c2ce288a4e649a8f39f3d19446b4';
 
 router.prefix('/ethapi');
 
 router.get('/', async (ctx, next) => {
 
 })
-
 
 /**
  * 
@@ -75,25 +75,29 @@ router.get('/balance', async(ctx, next) => {
 
 // token详情
 router.get('/tokeninfo', async(ctx, next) => {
+    // tokenjson
+    // console.log(tokenjson.abi);
     let web3 = new Web3(new Web3.providers.HttpProvider(rpc_url));
     let my = "0xD551234Ae421e3BCBA99A0Da6d736074f22192FF"
     let eos_contract_address = "0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0"
    
-
     // 合约地址
     if(!web3.utils.isAddress(ctx.query.contract_address)){
+        console.log('哈哈,one err');
         throw new CustomError(constants.CUSTOM_CODE.CONTRACT_ADDRESS_ERROR)
     }
-    
-    let contract = new web3.eth.Contract(erc20, ctx.query.contract_address);
+    console.log(':',ctx.query.contract_address);
+    let contract = new web3.eth.Contract(tokenjson.abi, ctx.query.contract_address);
     let decimals = await contract.methods.decimals().call();
     let name = await contract.methods.name().call();
     let symbol = await contract.methods.symbol().call();
-   
+    console.log('name:',name);
+    console.log('symbol:',symbol);
+    console.log('decimals:',decimals);
     // throw new CustomError(constants.CUSTOM_CODE.WALLET_ADDRESS_ERROR)
     ctx.body = {
-        name:web3.utils.hexToUtf8(name),
-        symbol:web3.utils.hexToUtf8(symbol),
+        name:name,
+        symbol:symbol,
         decimals: decimals
     }
 })

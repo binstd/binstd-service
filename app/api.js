@@ -36,8 +36,7 @@ router.get('/contact', async (req, next) => {
     } else {
         resultData = { 'status': 0 };
     }
-
-    console.log(resultData);
+    
     req.body = resultData
 })
 
@@ -362,7 +361,6 @@ router.post('/auth', async (ctx, next) => {
 
 // 获取指定钱包地址用户的合约信息
 router.get('/dapp/:publicaddress', koajwt({ secret: config.secret }), async (ctx, next) => {
-    console.log('=========!');    
     console.log(ctx.state.user.payload.publicAddress);
     if (ctx.state.user.payload.publicAddress !== ctx.params.publicaddress) {
         throw new HttpError(constants.HTTP_CODE.UNAUTHORIZED, 
@@ -388,10 +386,6 @@ router.post('/dapp', koajwt({ secret: config.secret }), async(ctx, next) => {
 // 获取用户信息
 router.get('/usercontact/:address', async(ctx, next) => {
     
-    // if (ctx.state.user.payload.publicAddress !== +ctx.params.address) {
-    //     throw new HttpError(constants.HTTP_CODE.UNAUTHORIZED, 
-    //         `You can can only access yourself`);
-    // }
     console.log('\n ctx.params.address:', ctx.params.address);
     ctx.body = await user_contact.findAll({ where: { address: ctx.params.address} });
     // ctx.body = await api_users.findById(ctx.params.userId);
@@ -410,7 +404,6 @@ router.patch('/users/:userId', koajwt({ secret: config.secret }), async (ctx, ne
         throw new HttpError(constants.HTTP_CODE.UNAUTHORIZED,
             `You can can only access yourself`);
     }
-
     ctx.body = await api_users.findById(ctx.params.userId)
         .then(api_users => {
             Object.assign(api_users, ctx.request.body);
@@ -419,5 +412,3 @@ router.patch('/users/:userId', koajwt({ secret: config.secret }), async (ctx, ne
 })
 
 module.exports = router
-
-// findAll({ where: { name: 'A Project' } })
