@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+    
   },
   "author": "luz",
   "license": "ISC",
@@ -17,6 +19,7 @@
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
-    "log4js": "^3.0.5"
+    "log4js": "^3.0.5",
+    "nodemon": "^1.18.4"
   }
 }
