@@ -16,12 +16,18 @@ const baseInfo = {
     serverIp: '0.0.0.0'		// 默认情况下服务器 ip 地址
 }
 
-const { env, appLogLevel, dir, serverIp, projectName } = baseInfo
+// const { env, appLogLevel, dir, serverIp, projectName } = baseInfo
 // 增加常量，用来存储公用的日志信息
-const commonInfo = { projectName, serverIp }
+// const commonInfo = { projectName, serverIp }
 module.exports = (options) => {
     const contextLogger = {}
     const appenders = {}
+
+    // 继承自 baseInfo 默认参数
+  const opts = Object.assign({}, baseInfo, options || {})
+    // 需要的变量解构 方便使用
+  const { env, appLogLevel, dir, serverIp, projectName } = opts
+  const commonInfo = { projectName, serverIp }    
 
     appenders.cheese = {
         type: 'dateFile',
@@ -35,6 +41,7 @@ module.exports = (options) => {
             type: "console"
         }
     }
+    
     let config = {
         appenders,
         categories: {
