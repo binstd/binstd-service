@@ -12,8 +12,9 @@ import miSend from  './mi-send'
 // const miLog = require('./log')
 import Log from './log'
 import ip from 'ip'
-
+import apiError from './api-error' 
 module.exports = (app) => {
+    app.use(apiError());
     //载入中间件
      // 日志中间件
     app.use(Log({
@@ -38,4 +39,5 @@ module.exports = (app) => {
   app.use(bodyParser())
   //载入misend中间件
   app.use(miSend())
+  
 }
