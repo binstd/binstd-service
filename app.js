@@ -4,7 +4,6 @@ require("babel-core/register")({
 });
 require("babel-polyfill");   //引入这个文件babel-polyfill很重要，否则出现错误
 
-
 const Koa = require('koa')
 const app = new Koa()
 const router = require('./router');

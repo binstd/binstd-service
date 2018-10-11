@@ -6,7 +6,6 @@ import access from './access'
 
 const methods = ["trace", "debug", "info", "warn", "error", "fatal", "mark"]
 
-
 // 提取默认公用参数对象
 const baseInfo = {
     appLogLevel: 'debug',  // 指定记录的日志级别

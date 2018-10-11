@@ -12,7 +12,7 @@ export default function(sequelize) {
         allowNull: false,
         type: Sequelize.STRING,
         unique: true
-      },
+    },
     contractAddress: {
         allowNull: false,
         type: Sequelize.STRING,

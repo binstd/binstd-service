@@ -21,9 +21,7 @@ class ApiController {
         //示范
         // ctx.apierror(ctx.customCode.CONTRACT_ADDRESS_ERROR)
         ctx.send(jsondata)
-
     }
-
     
 }
 
