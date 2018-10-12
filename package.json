@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "export NODE_ENV=product && nodemon app.js",
+    "prd": "NODE_ENV=production && pm2 app.js"
   },
   "author": "luz",
   "license": "ISC",
@@ -15,14 +16,18 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "ethereumjs-util": "^6.0.0",
     "ip": "^1.1.5",
+    "jsonwebtoken": "^8.3.0",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
+    "koa-jwt": "^3.5.1",
     "koa-router": "^7.4.0",
     "log4js": "^3.0.5",
     "nodemon": "^1.18.4",
     "pg": "^7.5.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.39.0"
+    "sequelize": "^4.39.0",
+    "web3": "^1.0.0-beta.36"
   }
 }

@@ -27,6 +27,9 @@ module.exports = () => {
           } catch (e) {
             let code = error_code;
             let message = e.message || '未知原因';
+            if(e.message == 'Authentication Error') {
+                code = 1005;
+            }
             ctx.send({ code, message });
         }
     }
