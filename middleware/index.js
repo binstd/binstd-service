@@ -5,7 +5,7 @@
 
 import bodyParser from 'koa-bodyparser'
 // const bodyParser = require('koa-bodyparser')
-import miSend from  './mi-send'
+import Send from  './send-json'
 // const miSend = require('./mi-send')
 
 // 引入日志中间件
@@ -14,7 +14,7 @@ import Log from './log'
 import ip from 'ip'
 import apiError from './api-error' 
 module.exports = (app) => {
-    app.use(apiError());
+
     //载入中间件
      // 日志中间件
     app.use(Log({
@@ -35,9 +35,14 @@ module.exports = (app) => {
 //     }
 //   }));
 
+ 
+    //载入send中间件
+    app.use(Send()); 
+    app.use(apiError());
+  
   //载入 bodyparser中间件
-  app.use(bodyParser())
-  //载入misend中间件
-  app.use(miSend())
+  app.use(bodyParser());
+
+ 
   
 }
