@@ -15,7 +15,8 @@ const sequelize = new Sequelize('d57eko2bomf4t3', 'qdgcpndksdlevz', '17a866b7f00
         max: 5,
         min: 0,
         idle: 10000
-    }
+    },
+    logging: false
 });
 
 // Init all models
