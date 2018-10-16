@@ -45,7 +45,11 @@ module.exports = (app) => {
     //获取token详情
     router.get('/api/chain/gasprice', /*koajwt({ secret: config.secret }), */ ChainApiController.getGasprice)
    
+    //获取交易记录列表
+    router.get('/api/chain/tokentx', /*koajwt({ secret: config.secret }), */ ChainApiController.getTokentxList)
 
+    //获取交易信息
+    router.get('/api/chain/tokentx/:hash', /*koajwt({ secret: config.secret }), */ ChainApiController.getTokentx)
     app.use(router.routes())
         .use(router.allowedMethods())
 }

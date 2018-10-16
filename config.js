@@ -9,11 +9,18 @@ const rpcurl = {
     'eth_error': 'https://mainnet.xx/'  //调试用,错误地址
     
 }
+const etherscan_url = {
+    'eth_main': 'http://api.etherscan.io/api',
+    'eth_ropsten':'https://api-ropsten.etherscan.io/api',
+    'eth_error': 'https://mainnet.xx/'  //调试用,错误地址
+}
 const config = {
     //jwt签名
     secret: 'shhhh', // TODO Put in process.env
     //不同链对应的默认rpc地址
     rpcurl,
+    etherscan_url,
+    etherscan_api_key:'7Y1ATI2EXF81K6QMR3ASNNJMKPJGT2QB24',
     //erc20的abi
     erc20abi:tokenjson.abi
 };
