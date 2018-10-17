@@ -21,7 +21,18 @@ npm run prd
 ```
 
 #### ** docker下**
-待完善…
+ 安装docker 
+ git clone -b v2 https://github.com/binstd/binstd-service  
+ cd binstd-service/   
+ sudo docker build -t binstd-service .
+ 运行测试:
+ sudo docker run -p 80:3000 binstd-servic
+ 正式:
+ sudo docker run -d -p 80:3000 binstd-service
+ 
+ 可自行修改docker的
+
+
 ## 核心代码二次开发
 #### 代码结构
 + Controller/\* (控制器目录)

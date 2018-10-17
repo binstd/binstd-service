@@ -1,6 +1,11 @@
 # 将官方 node:carbon 运行时用作父镜像
 FROM node:carbon
+
+# 收到添加pm2的方式,注意看结尾的CMD
+# 也可以查看文档: http://pm2.keymetrics.io/docs/usage/docker-pm2-nodejs/
 RUN npm install pm2 -g
+
+# 设置环境变量
 ENV NODE_ENV=production
 
 
@@ -24,4 +29,3 @@ EXPOSE 3000
 CMD ["pm2-runtime", "app.js"]
 
 
-#docker中使用 pm2  http://pm2.keymetrics.io/docs/usage/docker-pm2-nodejs/
