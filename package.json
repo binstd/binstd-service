@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "export NODE_ENV=product && nodemon app.js",
-    "prd": "NODE_ENV=production && pm2 app.js"
+    "start": "export NODE_ENV=dev && nodemon app.js",
+    "dev": "export NODE_ENV=dev && node app.js",
+    "prd": " export NODE_ENV=production &&pm2 start app.js --no-daemon"
   },
   "author": "luz",
   "license": "ISC",

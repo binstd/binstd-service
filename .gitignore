@@ -3,4 +3,5 @@ node_modules/
 .git
 package-lock.json
 yarn.lock
-log/
+logs/
+utils/prdConfig.js
