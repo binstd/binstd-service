@@ -7,8 +7,8 @@ require("babel-polyfill");   //引入这个文件babel-polyfill很重要，否�
 const Koa = require('koa')
 const app = new Koa()
 const router = require('./router');
-console.log('\n \n env: \n',app.env);
-// console.log('The value of PORT is:', process.env.PORT);
+//console.log('\n \n env: \n',app.env);
+
 //加载中间件
 const middleware = require('./middleware')
 middleware(app)

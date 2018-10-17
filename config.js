@@ -14,6 +14,7 @@ const etherscan_url = {
     'eth_ropsten':'https://api-ropsten.etherscan.io/api',
     'eth_error': 'https://mainnet.xx/'  //调试用,错误地址
 }
+//export const TXLIST_API_URL = 'https://api-ropsten.etherscan.io/api?module=account&action=txlist';
 const config = {
     //jwt签名
     secret: 'shhhh', // TODO Put in process.env

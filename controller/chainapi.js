@@ -5,6 +5,8 @@ import ethUtil from 'ethereumjs-util';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
 import Web3 from 'web3';
+
+import abiDecoder from 'abi-decoder'
 // import config from './utils/config';
 const api_users = sequelize.models.api_users;
 const user_dapp_info = sequelize.models.user_dapp_info;
@@ -163,7 +165,7 @@ class ChainApiController {
             }
         }
         //console.log('resultData: \n',resultData);
-        ctx.apidata({data:resultData});  
+        ctx.apidata({data:result});  
     }
     /**
      * @api 获取指定hash的交易记录
@@ -174,8 +176,13 @@ class ChainApiController {
 
         // console.log(ctx.params.hash);
         let web3 = new Web3(new Web3.providers.HttpProvider(config.rpcurl[ctx.query.chain]));
-        let result,transactionInfo = await web3.eth.getTransaction(ctx.params.hash);
-        web3.eth.getTransactionReceipt(ctx.params.hash).then(console.log);
+        let transactionInfo = await web3.eth.getTransaction(ctx.params.hash);
+        //web3.eth.getTransactionReceipt(ctx.params.hash).then(console.log);
+        console.log(transactionInfo);
+        abiDecoder.addABI(config.erc20abi);
+        let result = abiDecoder.decodeMethod(transactionInfo.input);
+        console.log(result);
+       // console.log(web3.utils.hexToAscii(transactionInfo));
         // let transactionInfo = {};
         // transactionInfo.from = result.from;
         // transactionInfo.to = result.to;
