@@ -14,14 +14,20 @@ module.exports = (app) => {
     router.get('/user', HomeController.login)
     router.post('/user/register', HomeController.register)
 
-    router.get('/api/:id', ApiController.hello)
+    // router.get('/api/:id', ApiController.hello)
     
     //提交auth申请
     router.post('/api/auth', ApiController.postOuth)
+    
+    //查询用户信息(公用)
+    router.get('/api/users', ApiController.getapiuser)
+
     //提交用户信息
     router.post('/api/users', ApiController.insertapiuser)
+
     //获取用户信息
     router.get('/api/users/:userId', koajwt({ secret: config.secret }), ApiController.apiuserinfo)
+    
     //修改用户信息
     router.patch('/api/users/:userId', koajwt({ secret: config.secret }), ApiController.patchapiuser)
     
@@ -41,7 +47,6 @@ module.exports = (app) => {
     //获取token详情
     router.get('/api/chain/tokeninfo', /*koajwt({ secret: config.secret }), */ ChainApiController.gettokeninfo)
     
-
     //获取token详情
     router.get('/api/chain/gasprice', /*koajwt({ secret: config.secret }), */ ChainApiController.getGasprice)
    

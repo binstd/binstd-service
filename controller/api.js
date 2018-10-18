@@ -29,24 +29,7 @@ class ApiController {
      * 
      * 
      */
-    async hello(ctx, next) {
-        console.log('request=body:', ctx.request.body);
-        let jsondata = await api_users.create(ctx.request.body);  
-        console.log(ctx.params)
-        console.log('customCode:',ctx.customCode.CONTRACT_ADDRESS_ERROR);
-        sequelize
-            .authenticate()
-            .then(() => {
-                console.log('Connection has been established successfully.');
-            })
-            .catch(err => {
-                console.error('Unable to connect to the database:', err);
-        });
-        //示范
-        // ctx.apierror(ctx.customCode.CONTRACT_ADDRESS_ERROR)
-        ctx.send(jsondata)
-    }
-
+  
     //  进行授权 api/auth post
     // router.post('/auth', 
     async postOuth(ctx, next) {
@@ -110,6 +93,8 @@ class ApiController {
         ctx.body = { accessToken };
     }
 
+
+
     /**
      * @api {post} /api/users 提交用户信息
      */
@@ -119,15 +104,29 @@ class ApiController {
         ctx.send(resultData);
     }
 
+    async getapiuser(ctx, next) {
+        console.log("router.get('/users', async (ctx, next) => {");
+        ctx.body = await api_users.findAll({ where: { publicAddress: ctx.query.publicAddress } });
+        // const whereClause = ctx.query &&ctx.query.publicAddress && {
+        //     where: { publicAddress: ctx.query.publicAddress }
+        // };
+        // let rows = await mysql.select('api_users', whereClause);
+        // ctx.body = rows;
+       
+    }
+
+
     /**
-     *   @api {post} /api/users 获取用户信息
+     *   @api {get} /api/users 获取用户信息
      */
     async apiuserinfo(ctx, next) {
         if (ctx.state.user.payload.id !== +ctx.params.userId) {
+            console.log(ctx.params.userId);
             ctx.apierror(ctx.customCode.CONTRACT_ADDRESS_ERROR,
                 `You can can only access yourself`);
         }
         let resultData = await api_users.findById(ctx.params.userId);
+        console.log('resultData:',resultData);
         ctx.send(resultData);
     }
 
