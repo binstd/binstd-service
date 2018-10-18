@@ -30,7 +30,7 @@ npm run prd
  正式:
  sudo docker run -d -p 80:3000 binstd-service
  
- 可自行修改docker的
+ 可自行修改docker的,已安装git和docker想快速部署,复制work.sh的内容即可
 
 
 ## 核心代码二次开发
