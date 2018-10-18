@@ -26,6 +26,7 @@
     "koa-bodyparser": "^4.2.1",
     "koa-jwt": "^3.5.1",
     "koa-router": "^7.4.0",
+    "koa2-cors": "^2.0.6",
     "log4js": "^3.0.5",
     "nodemon": "^1.18.4",
     "pg": "^7.5.0",
