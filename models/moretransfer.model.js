@@ -10,22 +10,26 @@ export default function(sequelize) {
       allowNull: false,
       type: Sequelize.STRING,
       unique: true,
-      validate: { isLowercase: true }
+    //   validate: { isLowercase: true }
     },
     fromAddress: {
         allowNull: false,
         type: Sequelize.STRING,
         unique: false,
-        validate: { isLowercase: true },
-       
+        // validate: { isLowercase: true },
     },
     dappId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         unique: false,
     },
+    contactName: {
+        allowNull: true,
+        type: Sequelize.STRING,
+        unique: false,
+    },
     chain: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
         unique: true,
         validate: { isLowercase: true }
@@ -36,7 +40,8 @@ export default function(sequelize) {
     },
     status: {
       type: Sequelize.INTEGER,
-      unique: true
+      unique: true,
+      defaultValue:0
     }
   });
 }

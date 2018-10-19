@@ -40,7 +40,7 @@ module.exports = (app) => {
  
     //载入send中间件
     app.use(Send())
-    app.use(apiError())
+    //app.use(apiError())
   
     //载入 bodyparser中间件
     app.use(bodyParser())

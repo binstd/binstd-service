@@ -195,12 +195,14 @@ class ChainApiController {
 
     async postMoreTransfer(ctx, next) {
         console.log('\n more_transfer:', ctx.request.body);
-        //也许可以缺德一点for循环 ctx.request.body,然后执行await more_transfer.create. 10月18日
-        // ctx.body = await more_transfer.create(ctx.request.body);   
-        ctx.apidata({data:ctx.request.body})
+        // 单条添加
+        //let resultData = await more_transfer.create(ctx.request.body);  
+        //一次添加多个
+        let resultData = await more_transfer.bulkCreate(ctx.request.body);   
+        console.log(resultData);
+        ctx.apidata({data:resultData})
     }
 
-    
     async getMoreTransfer(ctx, next) {
         //console.log('\n get more_transfer:',ctx.query);
         let data = [];
