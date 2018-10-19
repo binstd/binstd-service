@@ -22,9 +22,8 @@ export default function(sequelize) {
 
     user_id: {
         // allowNull: false,
-        type: Sequelize.INTEGER.UNSIGNED,
+        type: Sequelize.INTEGER,
         // defaultValue: () => Math.floor(Math.random() * 10000) // Initialize with a random nonce
     }
   });
 }
-

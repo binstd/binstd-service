@@ -33,11 +33,16 @@ module.exports = (app) => {
     
     // ‘/api/usercontact’ 提交联系人 
     router.post('/api/user/contact', ApiController.postApiUsercontact)
+
     // ‘/api/usercontact/:address' 获取联系人
     router.get('/api/user/contact/:address',ApiController.getApiUsercontact)
 
+    //获取用户联系人
+    //router.get('/usercontact/:address', ApiController.getUsercontact)    
+    
     //根据address获取dapp列表
     router.get('/api/dapp/:publicaddress', koajwt({ secret: config.secret }), ApiController.dappcontract)
+    
     //提交新dapp
     router.post('/api/dapp', koajwt({ secret: config.secret }), ApiController.postDapp)
 
@@ -55,6 +60,12 @@ module.exports = (app) => {
 
     //获取交易信息
     router.get('/api/chain/tokentx/:hash', /*koajwt({ secret: config.secret }), */ ChainApiController.getTokentx)
+
+    //post批量转账
+    router.post('/api/chain/moretransfer', /*koajwt({ secret: config.secret }), */ ChainApiController.postMoreTransfer)
+
+    //get批量转账
+    router.get('/api/chain/moretransfer', /*koajwt({ secret: config.secret }), */ ChainApiController.getMoreTransfer)
     app.use(router.routes())
         .use(router.allowedMethods())
 }

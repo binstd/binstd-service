@@ -93,8 +93,6 @@ class ApiController {
         ctx.body = { accessToken };
     }
 
-
-
     /**
      * @api {post} /api/users 提交用户信息
      */
@@ -114,7 +112,6 @@ class ApiController {
         // ctx.body = rows;
        
     }
-
 
     /**
      *   @api {get} /api/users 获取用户信息
@@ -161,7 +158,16 @@ class ApiController {
     async postApiUsercontact(ctx, next) {
         ctx.body = await user_contact.create(ctx.request.body);  
     }
-  
+
+    /**
+     *   @api {get} /api/usercontact/:address 获取联系人 
+     */
+    // async getUsercontact(ctx, next){
+    //     console.log('\n ctx.params.address:', ctx.params.address);
+    //     ctx.body = await user_contact.findAll({ where: { address: ctx.params.address} });
+    //     // ctx.body = await api_users.findById(ctx.params.userId);
+    // }
+
     /**
      * 
      * @api {get} /api/dapp/contract/:publicaddress 获取指定地址的dapp列表

@@ -3,6 +3,7 @@ import Sequelize from 'sequelize';
 import api_users from './models/user.model';
 import user_dapp_info from './models/dapp.info.model'
 import user_contact from './models/user.contact.model'
+import more_transfer from './models/moretransfer.model';
 
 //载入配置文件
 import prd_config from './utils/prdConfig'
@@ -38,7 +39,7 @@ const sequelize = new Sequelize('d57eko2bomf4t3', 'qdgcpndksdlevz', '17a866b7f00
 api_users(sequelize);
 user_dapp_info(sequelize);
 user_contact(sequelize);
-
+more_transfer(sequelize);
 sequelize.sync();
 
 export default sequelize;

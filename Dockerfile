@@ -8,14 +8,13 @@ RUN npm install pm2 -g
 # 设置环境变量
 ENV NODE_ENV=production
 
-
-
 # 将工作目录设置为 /app
 WORKDIR /app
 
 # 将当前目录内容复制到位于 /app  中的容器中
 ADD . /app
 
+# RUN git push https://github.com/binstd/binstd-service
 # 如果你需要构建生产环境下的代码，请使用：
 # RUN npm install --only=production
 RUN npm install

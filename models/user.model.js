@@ -4,7 +4,7 @@ export default function(sequelize) {
   const api_users = sequelize.define('api_users', {
     nonce: {
       allowNull: false,
-      type: Sequelize.INTEGER.UNSIGNED,
+      type: Sequelize.INTEGER,
       defaultValue: () => Math.floor(Math.random() * 10000) // Initialize with a random nonce
     },
     publicAddress: {

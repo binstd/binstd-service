@@ -11,6 +11,7 @@ import abiDecoder from 'abi-decoder'
 const api_users = sequelize.models.api_users;
 const user_dapp_info = sequelize.models.user_dapp_info;
 const user_contact = sequelize.models.user_contact;
+const more_transfer = sequelize.models.more_transfer;
 
 class ChainApiController {
 
@@ -174,7 +175,6 @@ class ChainApiController {
      */
     async getTokentx(ctx, next) {
 
-        // console.log(ctx.params.hash);
         let web3 = new Web3(new Web3.providers.HttpProvider(config.rpcurl[ctx.query.chain]));
         let transactionInfo = await web3.eth.getTransaction(ctx.params.hash);
         //web3.eth.getTransactionReceipt(ctx.params.hash).then(console.log);
@@ -193,7 +193,34 @@ class ChainApiController {
         ctx.apidata({data:transactionInfo});  
     }
 
+    async postMoreTransfer(ctx, next) {
+        console.log('\n more_transfer:', ctx.request.body);
+        //也许可以缺德一点for循环 ctx.request.body,然后执行await more_transfer.create. 10月18日
+        // ctx.body = await more_transfer.create(ctx.request.body);   
+        ctx.apidata({data:ctx.request.body})
+    }
+
+    
+    async getMoreTransfer(ctx, next) {
+        //console.log('\n get more_transfer:',ctx.query);
+        let data = [];
+        if(ctx.query.fromAddress) {
+            data = await more_transfer.findAll({ where: { fromAddress: ctx.query.fromAddress } }); 
+        }
+        if(ctx.query.dappId) {
+            if (ctx.query.status) {
+                //console.log('status出现了!');
+                data = await more_transfer.findAll({ where: { dappId: ctx.query.dappId, status: ctx.query.status} }); 
+
+            } else {
+                data = await more_transfer.findAll({ where: { dappId: ctx.query.dappId } }); 
+            }               
+        }
+        ctx.apidata(data);
+         
+    }
 
 }
+
 
 export default new ChainApiController();
