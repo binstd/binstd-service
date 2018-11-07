@@ -3,6 +3,10 @@ import Router from 'koa-router';
 import HomeController from './controller/home'
 import ApiController from './controller/api'
 import ChainApiController from './controller/chainapi';
+
+//爬虫&内容API
+import SpiderApiController from './controller/spiderapi';
+
 import config from './config';
 const router = Router();
 import koajwt from 'koa-jwt';
@@ -66,6 +70,20 @@ module.exports = (app) => {
 
     //get批量转账
     router.get('/api/chain/moretransfer', /*koajwt({ secret: config.secret }), */ ChainApiController.getMoreTransfer)
+
+
+    router.get('/api/article', /*koajwt({ secret: config.secret }), */ SpiderApiController.getArticle)
+   
+    router.get('/api/spiders', /*koajwt({ secret: config.secret }), */ SpiderApiController.getSpiders)
+    router.get('/api/spiders/:id', /*koajwt({ secret: config.secret }), */ SpiderApiController.getOneSpiders)
+    router.put('/api/spiders/:id', SpiderApiController.patchSpiders)
+    
+    
+    router.get('/api/spiderstags', /*koajwt({ secret: config.secret }), */ SpiderApiController.getSpidersTags)
+    router.get('/api/spiderstags/:id', /*koajwt({ secret: config.secret }), */ SpiderApiController.getOneSpidersTags)
+    router.put('/api/spiderstags/:id', SpiderApiController.patchSpidersTags)
+
+
     app.use(router.routes())
         .use(router.allowedMethods())
 }

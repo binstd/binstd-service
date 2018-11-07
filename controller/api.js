@@ -1,4 +1,4 @@
-import sequelize from '../db';
+import {sequelize} from '../db';
 import config from '../config';
 
 import ethUtil from 'ethereumjs-util';

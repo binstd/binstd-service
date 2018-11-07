@@ -16,7 +16,16 @@ import Log from './log'
 import ip from 'ip'
 import apiError from './api-error' 
 module.exports = (app) => {
-    app.use(cors())
+    app.use(cors({
+        origin: function (ctx) {
+            return "*"; // 允许来自所有域名请求
+        },
+        exposeHeaders: ['Content-Range', 'WWW-Authenticate', 'Server-Authorization'],
+        maxAge: 5,
+        credentials: true,
+        allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+        allowMethods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+    }))
     //载入中间件
      // 日志中间件
     app.use(Log({
@@ -26,18 +35,8 @@ module.exports = (app) => {
             dir: 'logs',
             serverIp: ip.address()
     }))
-    //   app.use(staticFiles(path.resolve(__dirname, "../public")))
+   
 
-//模版引擎nunjucks
-//   app.use(nunjucks({
-//     ext: 'html',
-//     path: path.join(__dirname, '../views'),
-//     nunjucksConfig: {
-//       trimBlocks: true
-//     }
-//   }));
-
- 
     //载入send中间件
     app.use(Send())
     //app.use(apiError())

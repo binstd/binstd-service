@@ -1,4 +1,4 @@
-import sequelize from '../db';
+import {sequelize} from '../db';
 import config from '../config';
 
 import ethUtil from 'ethereumjs-util';
@@ -177,19 +177,6 @@ class ChainApiController {
 
         let web3 = new Web3(new Web3.providers.HttpProvider(config.rpcurl[ctx.query.chain]));
         let transactionInfo = await web3.eth.getTransaction(ctx.params.hash);
-        //web3.eth.getTransactionReceipt(ctx.params.hash).then(console.log);
-        console.log(transactionInfo);
-        abiDecoder.addABI(config.erc20abi);
-        let result = abiDecoder.decodeMethod(transactionInfo.input);
-        console.log(result);
-       // console.log(web3.utils.hexToAscii(transactionInfo));
-        // let transactionInfo = {};
-        // transactionInfo.from = result.from;
-        // transactionInfo.to = result.to;
-        // //transactionInfo.tokenSymbol = result[i].tokenSymbol;
-        // transactionInfo.value = result.value
-        // item.hash = result[i].hash
-        // item.tx_cost = result.cumulativeGasUsed*result.gasUsed;
         ctx.apidata({data:transactionInfo});  
     }
 
@@ -218,11 +205,7 @@ class ChainApiController {
                 data = await more_transfer.findAll({ where: { dappId: ctx.query.dappId } }); 
             }               
         }
-        ctx.apidata(data);
-         
+        ctx.apidata(data);   
     }
-
 }
-
-
 export default new ChainApiController();
