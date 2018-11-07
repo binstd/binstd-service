@@ -103,11 +103,12 @@ class ChainApiController {
         let decimals = await contract.methods.decimals().call();
         let name = await contract.methods.name().call();
         let symbol = await contract.methods.symbol().call();
-
+        let totalSupply = await contract.methods.totalSupply().call();
         ctx.apidata({
             name: name,
             symbol: symbol,
-            decimals: decimals
+            decimals: decimals,
+            totalSupply: totalSupply
         });
     }
 
@@ -144,11 +145,9 @@ class ChainApiController {
         param['sort'] = "desc";
         param['apikey'] = config.etherscan_api_key;
         
-        //console.log(param);
         let response = await axios.get(config.etherscan_url[ctx.query.chain], {
             params: param
         });
-        //console.log('response',response);
         if( response.data.status == 1) {
             var result = response.data.result;
             
