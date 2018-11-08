@@ -19,6 +19,11 @@ export default function (sequelize) {
             allowNull: true,
             type: Sequelize.STRING,
         },
+        description: {
+            allowNull: true,
+            type: Sequelize.STRING,
+            unique: false,
+        },
         //图片
         imgurl: {
             allowNull: true,
@@ -40,6 +45,7 @@ export default function (sequelize) {
             unique: true,
             allowNull: false,
         },
+      
         // 0:未爬内容 1:已爬完 4:作废
         status: {
             allowNull: false,
