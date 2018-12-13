@@ -1,39 +1,42 @@
 import Sequelize from 'sequelize';
 
 export default function(sequelize) {
-  const user_dapp_info = sequelize.define('user_dapp_info', {
-    publicAddress: {
+  const dapp_abi = sequelize.define('dapp_abi', {
+    title: {
       allowNull: false,
       type: Sequelize.STRING,
-      unique: false,
+      unique: true,
     //   validate: { isLowercase: true }
     },
-    dappName: {
+    contractName: {
         type: Sequelize.STRING,
         unique: false
     },
-    txHash: {
+    description: {
         type: Sequelize.STRING,
         unique: false
     },
-    contractAddress: {
+    imgUrl: {
         type: Sequelize.STRING,
         unique: false,
-        // validate: { isLowercase: true }
     },
-    contractInfo: {
-        type: Sequelize.STRING
-    },
-    dappChain: {
-      type: Sequelize.STRING,
+    // abi文件
+    abi: {
+      type: Sequelize.JSON,
       unique: false
     },
-    // 状态 0 未生成合约, 1 已生成合约 2.删除
+    // 部署字节
+    bytecode: {
+        type: Sequelize.TEXT,
+        unique: false,
+    },
+    // 状态0 无效，状态1 有效 
     status: {
         type: Sequelize.INTEGER,
         unique: false,
-        defaultValue: 0
+        defaultValue:1
     }
+
   });
 }
 

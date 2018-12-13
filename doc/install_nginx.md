@@ -19,7 +19,6 @@ log_format proxyformat "$remote_addr $request_time $http_x_readtime [$time_local
       }
   }  
 
-
   server {
         listen 443;
         server_name api.binstd.com; #填写绑定证书的域名

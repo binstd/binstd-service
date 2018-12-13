@@ -3,34 +3,18 @@ import config from '../config';
 
 import ethUtil from 'ethereumjs-util';
 import jwt from 'jsonwebtoken';
+
+import Web3 from 'web3';
 // import config from './utils/config';
 const api_users = sequelize.models.api_users;
 const user_dapp_info = sequelize.models.user_dapp_info;
 const user_contact = sequelize.models.user_contact;
 
+
+
 class ApiController {
-    /**
-     * 
-     * @api {get} /api/
-     * @apiName API
-     * @apiGroup group
-     * @apiVersion  major.minor.patch
-     * 
-     * 
-     * @apiParam  {String} paramName description
-     * 
-     * @apiSuccess (200) {type} name description
-     * 
-     * @apiParamExample  {type} Request-Example:
-     * {
-     *     property : value
-     * }
-     * 
-     * 
-     * 
-     */
-  
-    //  进行授权 api/auth post
+    
+    // 进行授权 api/auth post
     // router.post('/auth', 
     async postOuth(ctx, next) {
         // console.log(ctx.request.body);
@@ -131,6 +115,7 @@ class ApiController {
      *   @api {post} /api/users 设置用户信息
      */
     async patchapiuser(ctx, next) {
+
         if (ctx.state.user.payload.id !== + ctx.params.userId) {
             ctx.apierror(ctx.customCode.CONTRACT_ADDRESS_ERROR,
                 `You can can only access yourself`);
@@ -144,7 +129,9 @@ class ApiController {
 
 
     /**
-     *   @api {get} /api/users/contact 获取联系人信息
+     *  @api {get} /api/users/contact 获取联系人信息
+     *  
+     *  /api/user/contact/0x81d723361d4f3e648f2c9c479d88dc6debf4fa5f
      */
     async getApiUsercontact(ctx, next) {
         console.log('\n ctx.params.address:', ctx.params.address);
@@ -156,7 +143,10 @@ class ApiController {
      *   @api {post} /api/users/contact 提交联系人
      */
     async postApiUsercontact(ctx, next) {
-        ctx.body = await user_contact.create(ctx.request.body);  
+        console.log('222'); 
+        console.log('\n \n \n :',ctx.request.body);
+        ctx.body = await user_contact.create(ctx.request.body); 
+       
     }
 
     /**
@@ -199,25 +189,31 @@ class ApiController {
      * 
      */
     async dappcontract(ctx, next) {
-        if (ctx.state.user.payload.publicAddress !== ctx.params.publicaddress) {
-
-            ctx.apierror(ctx.customCode.CONTRACT_ADDRESS_ERROR,
-            `You can can only access yourself`);    
-        }
-        let resultData = await user_dapp_info.findAll({ where: { publicAddress: ctx.params.publicaddress} });
+        let resultData = await user_dapp_info.findAll({ raw: true, where: { publicAddress: ctx.params.publicaddress} });
+        let returnData = [];
+        // console.log('eth_ropsten:',config.rpcurl[ctx.query.chain]);
+        let web3 = new Web3(new Web3.providers.HttpProvider(config.rpcurl[ctx.query.chain]));
         // console.log(resultData);
-        ctx.send(resultData)
+        for(let item of resultData) {     
+            if(item['contractAddress'] == null && item['dappChain']== ctx.query.chain){
+                
+                console.log(item);
+                let transactionInfo = await web3.eth.getTransactionReceipt(item['txHash']);
+                item['contractAddress'] = transactionInfo['contractAddress'];
+                // console.log(transactionInfo['contractAddress']);
+                returnData.push(item); 
+            }     
+        } 
+
+        ctx.send(returnData)
     }
 
     /**
      *   @api {post} /api/dapp 提交新dapp
      */
     async postDapp(ctx, next) {
-        console.log('3232323232:::', ctx.request.body);
-        // if (ctx.state.user.payload.publicAddress !== +ctx.params.publicaddress) {
-        //     throw new HttpError(constants.HTTP_CODE.UNAUTHORIZED, 
-        //         `You can can only access yourself`);
-        // }
+        // console.log('3232323232::: =》》》', ctx.request.body);
+     
         ctx.body = await user_dapp_info.create(ctx.request.body);   
     }
     

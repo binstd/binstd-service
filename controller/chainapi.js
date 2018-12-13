@@ -7,11 +7,15 @@ import axios from 'axios';
 import Web3 from 'web3';
 
 import abiDecoder from 'abi-decoder'
-// import config from './utils/config';
+
+
 const api_users = sequelize.models.api_users;
 const user_dapp_info = sequelize.models.user_dapp_info;
 const user_contact = sequelize.models.user_contact;
 const more_transfer = sequelize.models.more_transfer;
+
+const dapp_abi = sequelize.models.dapp_abi;
+
 
 class ChainApiController {
 
@@ -46,9 +50,6 @@ class ChainApiController {
         let decimals = await contract.methods.decimals().call();
         let name = await contract.methods.name().call();
         let symbol = await contract.methods.symbol().call();
-        console.log('name:', name);
-        console.log('symbol:', symbol);
-        console.log('decimals:', decimals);
         // throw new CustomError(constants.CUSTOM_CODE.WALLET_ADDRESS_ERROR)
         ctx.body = {
             name: name,
@@ -203,6 +204,34 @@ class ChainApiController {
             }               
         }
         ctx.apidata(data);   
+    }
+
+
+    //api/chain/abi?apiname=ERC721Basic
+    async getAbi(ctx, next) {
+        console.log(config.abi[ctx.query.apiname]);
+        let data = await dapp_abi.findOne({ where: { contractName: ctx.query.apiname} })
+        // ctx.apidata(config.abi[ctx.query.apiname])
+        ctx.apidata(data)
+    }
+
+
+    async getAllContractList(ctx, next) {
+        
+        const contractname = ['ERC721Basic', 'BoteBasic', 'ERC20Basic','LinkMall','LotteryControl'];
+        let contractlist = []; 
+        for(let name of contractname) {
+            contractlist.push({
+                title: config.abi[name].title,
+                description:config.abi[name].description,
+                contractName:config.abi[name].contractName,
+            });
+        }
+        let data = await dapp_abi.findAll({ where: { status: 1 } });
+        console.log(data);
+        
+        // let accessToken = await api_users.findOne({ where: { publicAddress } })
+        ctx.apidata(data)
     }
 }
 export default new ChainApiController();

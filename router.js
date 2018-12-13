@@ -45,10 +45,10 @@ module.exports = (app) => {
     //router.get('/usercontact/:address', ApiController.getUsercontact)    
     
     //根据address获取dapp列表
-    router.get('/api/dapp/:publicaddress', koajwt({ secret: config.secret }), ApiController.dappcontract)
-    
+    // router.get('/api/dapp/:publicaddress', koajwt({ secret: config.secret }), ApiController.dappcontract)
+    router.get('/api/dapp/:publicaddress',  ApiController.dappcontract)
     //提交新dapp
-    router.post('/api/dapp', koajwt({ secret: config.secret }), ApiController.postDapp)
+    router.post('/api/dapp', ApiController.postDapp)
 
     //获取余额
     router.get('/api/chain/balance', /*koajwt({ secret: config.secret }), */ ChainApiController.getbalance)
@@ -70,7 +70,12 @@ module.exports = (app) => {
 
     //get批量转账
     router.get('/api/chain/moretransfer', /*koajwt({ secret: config.secret }), */ ChainApiController.getMoreTransfer)
-
+   
+    //获取abi
+    router.get('/api/chain/abi', /*koajwt({ secret: config.secret }), */ ChainApiController.getAbi)
+   
+    //获取合约列表
+    router.get('/api/chain/allcontractlist', /*koajwt({ secret: config.secret }), */ ChainApiController.getAllContractList)
 
     router.get('/api/article', /*koajwt({ secret: config.secret }), */ SpiderApiController.getArticle)
    

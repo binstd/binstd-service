@@ -6,6 +6,7 @@ import user_contact from './models/user.contact.model'
 import more_transfer from './models/moretransfer.model';
 import article_spider from './models/article.spider.model';
 import tags_spider from './models/tags.spider.model';
+import dapp_abi from './models/dapp.abi.model';
 //载入配置文件
 import prd_config from './utils/prdConfig'
 
@@ -16,7 +17,6 @@ if (Object.keys(prd_config).length == 0) {
 } else {
     //prd_config不为空
     console.log(prd_config);
-  
 }
 
 const sequelize = new Sequelize('d57eko2bomf4t3', 'qdgcpndksdlevz', '17a866b7f00703519c0cfaf0b493ece3977144bfcc492c21c9ed4e8a9322f839', {
@@ -32,8 +32,8 @@ const sequelize = new Sequelize('d57eko2bomf4t3', 'qdgcpndksdlevz', '17a866b7f00
         min: 0,
         idle: 10000
     },
-    // logging: console.log
-    logging: false
+    logging: console.log
+    // logging: false
 });
 
 // Init all models
@@ -41,6 +41,7 @@ api_users(sequelize);
 user_dapp_info(sequelize);
 user_contact(sequelize);
 more_transfer(sequelize);
+dapp_abi(sequelize);
 sequelize.sync();
 
 //爬虫表设置
