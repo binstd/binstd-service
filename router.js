@@ -88,6 +88,7 @@ module.exports = (app) => {
     router.get('/api/spiderstags/:id', /*koajwt({ secret: config.secret }), */ SpiderApiController.getOneSpidersTags)
     router.put('/api/spiderstags/:id', SpiderApiController.patchSpidersTags)
 
+    router.get('/api/coffee/ticket', ApiController.getCoffeeTicket)
 
     app.use(router.routes())
         .use(router.allowedMethods())

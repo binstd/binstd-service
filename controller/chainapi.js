@@ -123,6 +123,7 @@ class ChainApiController {
         })
     }
 
+
     /**
      * @api 根据指定地址和合约查询交易记录
      */
@@ -166,6 +167,52 @@ class ChainApiController {
         //console.log('resultData: \n',resultData);
         ctx.apidata({data:result});  
     }
+
+    //  /**
+    //  * @api 根据指定地址和合约查询交易记录
+    //  */
+    // async getTxList(ctx, next) {
+    //     var resultData = [];
+    //     let param = {};
+    //     if(ctx.query.contract_address){ //erc20 
+    //         param['module'] = "account";
+    //         param['action'] = "tokentx";
+    //         param['contractaddress'] = ctx.query.contract_address; //"0xdd974D5C2e2928deA5F71b9825b8b646686BD200";
+    //     }else{ //eth
+    //         param['module'] = "account";
+    //         param['action'] = "txlist";
+    //     }
+        
+    //     param['address'] = ctx.query.address; //"0x81D723361d4F3e648F2c9c479d88DC6dEBF4fA5f";
+    //     param['page'] = 1; //页数
+    //     param['offset'] = 8;//数量
+    //     param['sort'] = "desc";
+    //     param['apikey'] = config.etherscan_api_key;
+        
+    //     let response = await axios.get(config.etherscan_url[ctx.query.chain], {
+    //         params: param
+    //     });
+    //     if( response.data.status == 1) {
+    //         var result = response.data.result;
+            
+    //         for(let i = 0; i< result.length; i++ ){
+    //             let item = {};
+    //             // console.log('oi',i);
+    //             item.from = result[i].from;
+    //             item.to = result[i].to;
+    //             item.tokenSymbol = result[i].tokenSymbol;
+    //             item.value = result[i].value
+    //             item.hash = result[i].hash
+    //             item.tx_cost = result[i].gasPrice*result[i].gasUsed;
+    //             resultData.push(item);
+    //             // console.log('\n item:',item);
+    //         }
+    //     }
+    //     //console.log('resultData: \n',resultData);
+    //     ctx.apidata({data:result});  
+    // }
+
+
     /**
      * @api 获取指定hash的交易记录
      * 测试网,部署合约: 0x1f4c8864efa774063a9a36be1c53c26d8bb5b6083427371ea64bfe5a6c22db5e

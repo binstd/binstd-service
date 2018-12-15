@@ -5,6 +5,9 @@ import ethUtil from 'ethereumjs-util';
 import jwt from 'jsonwebtoken';
 
 import Web3 from 'web3';
+import axios from 'axios';
+
+const crypto = require('crypto');
 // import config from './utils/config';
 const api_users = sequelize.models.api_users;
 const user_dapp_info = sequelize.models.user_dapp_info;
@@ -146,7 +149,6 @@ class ApiController {
         console.log('222'); 
         console.log('\n \n \n :',ctx.request.body);
         ctx.body = await user_contact.create(ctx.request.body); 
-       
     }
 
     /**
@@ -217,6 +219,36 @@ class ApiController {
         ctx.body = await user_dapp_info.create(ctx.request.body);   
     }
     
+    async getCoffeeTicket(ctx, next) {
+        const telephone = ctx.query.telephone;
+        //活动码
+        const inviteCode = 'MK20181214003';
+        //时间戳
+        //const timestamp = '4343434343';
+        //签名
+        // const signature = '434343434';
+
+        let param = {}; 
+        param['mobile'] = ctx.query.telephone.toString(); //telephone; 
+        param['inviteCode'] = 'MK20181214003';
+        param['timestamp'] = Date.parse( new Date()).toString();//数量
+    
+        const hash = crypto.createHash('sha1');
+        // 可任意多次调用update():
+        hash.update(param['inviteCode']);
+        hash.update(param['mobile']);
+        hash.update(param['timestamp']);
+        param['signature'] = hash.digest('hex'); 
+        console.log('param', param);
+        // console.log('hash.digest:', hash.digest('hex')); // 7e1977739c748beac0c0fd14fd26a544
+        let response = await axios.get('https://mktpre.luckincoffee.com/extapi/coupon', {
+            params: param
+        });    
+        console.log(response.data);
+        
+        ctx.body = response.data
+        // ctx.apidata({response}); 
+    }
 }
 
 export default new ApiController();
