@@ -241,7 +241,8 @@ class ApiController {
         param['signature'] = hash.digest('hex'); 
         console.log('param', param);
         // console.log('hash.digest:', hash.digest('hex')); // 7e1977739c748beac0c0fd14fd26a544
-        let response = await axios.get('https://mktpre.luckincoffee.com/extapi/coupon', {
+        //https://mkt.luckincoffee.com/extapi/coupon
+        let response = await axios.get('https://mkt.luckincoffee.com/extapi/coupon', {
             params: param
         });    
         console.log(response.data);
