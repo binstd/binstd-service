@@ -25,6 +25,11 @@ export default function(sequelize) {
       type: Sequelize.JSON,
       unique: false
     },
+    // abi文件
+    translate: {
+        type: Sequelize.JSON,
+        unique: false
+      },
     // 部署字节
     bytecode: {
         type: Sequelize.TEXT,
