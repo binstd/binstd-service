@@ -14,7 +14,6 @@ const user_dapp_info = sequelize.models.user_dapp_info;
 const user_contact = sequelize.models.user_contact;
 
 
-
 class ApiController {
     
     // 进行授权 api/auth post
@@ -195,7 +194,7 @@ class ApiController {
         let returnData = [];
         // console.log('eth_ropsten:',config.rpcurl[ctx.query.chain]);
         let web3 = new Web3(new Web3.providers.HttpProvider(config.rpcurl[ctx.query.chain]));
-        // console.log(resultData);
+        console.log('resultData',resultData);
         for(let item of resultData) {     
             if(item['contractAddress'] == null && item['dappChain']== ctx.query.chain){
                 

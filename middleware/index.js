@@ -8,10 +8,7 @@ import cors from 'koa2-cors';
 
 // const bodyParser = require('koa-bodyparser')
 import Send from  './send-json'
-// const miSend = require('./mi-send')
 
-// 引入日志中间件
-// const miLog = require('./log')
 import Log from './log'
 import ip from 'ip'
 import apiError from './api-error' 
@@ -23,7 +20,7 @@ module.exports = (app) => {
         exposeHeaders: ['Content-Range', 'WWW-Authenticate', 'Server-Authorization'],
         maxAge: 5,
         credentials: true,
-        allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+        allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'User-Agent'],
         allowMethods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
     }))
     //载入中间件
