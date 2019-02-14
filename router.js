@@ -32,8 +32,8 @@ module.exports = (app) => {
     //获取用户信息
     router.get('/api/users/:userId', koajwt({ secret: config.secret }), ApiController.apiuserinfo)
     
-    //修改用户信息
-    router.patch('/api/users/:userId', koajwt({ secret: config.secret }), ApiController.patchapiuser)
+    //修改用户信息  + koajwt({ secret: config.secret }),
+    router.patch('/api/users/:userId',  ApiController.patchapiuser)
     
     // ‘/api/usercontact’ 提交联系人 
     router.post('/api/user/contact', ApiController.postApiUsercontact)

@@ -16,6 +16,12 @@ export default function(sequelize) {
     username: {
       type: Sequelize.STRING,
       unique: true
-    }
+    },
+    telephone:{
+        type: Sequelize.STRING,
+    },
+    email:{
+        type: Sequelize.STRING,
+      },
   });
 }

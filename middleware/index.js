@@ -33,7 +33,6 @@ module.exports = (app) => {
             serverIp: ip.address()
     }))
    
-
     //载入send中间件
     app.use(Send())
     //app.use(apiError())

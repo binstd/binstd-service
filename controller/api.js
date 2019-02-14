@@ -17,7 +17,9 @@ const user_contact = sequelize.models.user_contact;
 class ApiController {
     
     // 进行授权 api/auth post
-    // router.post('/auth', 
+    /**
+     *   @api {post} api/auth 进行授权登陆
+     */
     async postOuth(ctx, next) {
         // console.log(ctx.request.body);
         const { signature, publicAddress } = ctx.request.body;
@@ -88,15 +90,11 @@ class ApiController {
         ctx.send(resultData);
     }
 
+    //根据publicAddress获取用户信息
+    // api/users?publicAddress=
     async getapiuser(ctx, next) {
         console.log("router.get('/users', async (ctx, next) => {");
-        ctx.body = await api_users.findAll({ where: { publicAddress: ctx.query.publicAddress } });
-        // const whereClause = ctx.query &&ctx.query.publicAddress && {
-        //     where: { publicAddress: ctx.query.publicAddress }
-        // };
-        // let rows = await mysql.select('api_users', whereClause);
-        // ctx.body = rows;
-       
+        ctx.body = await api_users.findAll({ where: { publicAddress: ctx.query.publicAddress } }); 
     }
 
     /**
@@ -114,14 +112,10 @@ class ApiController {
     }
 
     /**
-     *   @api {post} /api/users 设置用户信息
+     *   @api {patch} /api/users 设置用户信息
      */
     async patchapiuser(ctx, next) {
 
-        if (ctx.state.user.payload.id !== + ctx.params.userId) {
-            ctx.apierror(ctx.customCode.CONTRACT_ADDRESS_ERROR,
-                `You can can only access yourself`);
-        }
         ctx.body = await api_users.findById(ctx.params.userId)
         .then(api_users => {
             Object.assign(api_users, ctx.request.body);
@@ -138,7 +132,6 @@ class ApiController {
     async getApiUsercontact(ctx, next) {
         console.log('\n ctx.params.address:', ctx.params.address);
         ctx.body = await user_contact.findAll({ where: { address: ctx.params.address } });
-        // ctx.body = await api_users.findById(ctx.params.userId);
     }
 
     /**
@@ -150,14 +143,7 @@ class ApiController {
         ctx.body = await user_contact.create(ctx.request.body); 
     }
 
-    /**
-     *   @api {get} /api/usercontact/:address 获取联系人 
-     */
-    // async getUsercontact(ctx, next){
-    //     console.log('\n ctx.params.address:', ctx.params.address);
-    //     ctx.body = await user_contact.findAll({ where: { address: ctx.params.address} });
-    //     // ctx.body = await api_users.findById(ctx.params.userId);
-    // }
+  
 
     /**
      * 
@@ -212,9 +198,7 @@ class ApiController {
     /**
      *   @api {post} /api/dapp 提交新dapp
      */
-    async postDapp(ctx, next) {
-        // console.log('3232323232::: =》》》', ctx.request.body);
-     
+    async postDapp(ctx, next) { 
         ctx.body = await user_dapp_info.create(ctx.request.body);   
     }
     
