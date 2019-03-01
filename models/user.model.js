@@ -19,6 +19,7 @@ export default function(sequelize) {
     },
     telephone:{
         type: Sequelize.STRING,
+        unique: true,
     },
     email:{
         type: Sequelize.STRING,

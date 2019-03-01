@@ -13,6 +13,7 @@ import Log from './log'
 import ip from 'ip'
 import apiError from './api-error' 
 module.exports = (app) => {
+    
     app.use(cors({
         origin: function (ctx) {
             return "*"; // 允许来自所有域名请求

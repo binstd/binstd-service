@@ -85,8 +85,14 @@ class ApiController {
      * @api {post} /api/users 提交用户信息
      */
     async insertapiuser(ctx, next) {
-        console.log('request.body:', ctx.request.body);
-        let resultData = await api_users.create(ctx.request.body); 
+        // console.log('\n \n \n request.body===:', ctx.request.body);
+        let resultData  = ''
+        try {
+            resultData = await api_users.create(ctx.request.body); 
+        }catch (error) {
+            resultData  = { code:1200, message:'添加失败' }
+        }
+
         ctx.send(resultData);
     }
 
