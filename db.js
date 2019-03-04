@@ -8,19 +8,19 @@ import article_spider from './models/article.spider.model';
 import tags_spider from './models/tags.spider.model';
 import dapp_abi from './models/dapp.abi.model';
 //载入配置文件
-import prd_config from './utils/prdConfig'
+// import prd_config from './utils/prdConfig'
 
 //判断是否载入正式环境配置
-if (Object.keys(prd_config).length == 0) { 
-    //prd_config为空
-    console.log('node_env is:', process.env.NODE_ENV);
-} else {
-    //prd_config不为空
-    console.log(prd_config);
-}
+// if (Object.keys(prd_config).length == 0) { 
+//     //prd_config为空
+//     console.log('node_env is:', process.env.NODE_ENV);
+// } else {
+//     //prd_config不为空
+//     console.log(prd_config);
+// }
 
-const sequelize = new Sequelize('d57eko2bomf4t3', 'qdgcpndksdlevz', '17a866b7f00703519c0cfaf0b493ece3977144bfcc492c21c9ed4e8a9322f839', {
-    host: 'ec2-54-243-147-162.compute-1.amazonaws.com',
+const sequelize = new Sequelize('d8ubrd8k62ieqe', 'wmfjrxnaysczkj', 'bc43d62d01a7356e6108a73d9a69906a4e4a40c8a727ce07bf8cb7a49b870f98', {
+    host: 'ec2-54-83-55-115.compute-1.amazonaws.com',
     port: 5432,
     dialect: 'postgres',
     
@@ -45,8 +45,8 @@ dapp_abi(sequelize);
 sequelize.sync();
 
 //爬虫表设置
-const dbspider = new Sequelize('d57eko2bomf4t3', 'qdgcpndksdlevz', '17a866b7f00703519c0cfaf0b493ece3977144bfcc492c21c9ed4e8a9322f839', {
-    host: 'ec2-54-243-147-162.compute-1.amazonaws.com',
+const dbspider = new Sequelize('d8ubrd8k62ieqe', 'wmfjrxnaysczkj', 'bc43d62d01a7356e6108a73d9a69906a4e4a40c8a727ce07bf8cb7a49b870f98', {
+    host: 'ec2-54-83-55-115.compute-1.amazonaws.com',
     port: 5432,
     dialect: 'postgres',
     define: {
