@@ -14,16 +14,28 @@ import ip from 'ip'
 import apiError from './api-error' 
 module.exports = (app) => {
     
+    // app.use(cors({
+    //     origin: function (ctx) {
+    //         return "*"; // 允许来自所有域名请求
+    //     },
+    //     exposeHeaders: ['Content-Range', 'WWW-Authenticate', 'Server-Authorization'],
+    //     maxAge: 5,
+    //     credentials: true,
+    //     allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'User-Agent'],
+    //     allowMethods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+    // }))
+
     app.use(cors({
         origin: function (ctx) {
-            return "*"; // 允许来自所有域名请求
+            return '*'; 
         },
-        exposeHeaders: ['Content-Range', 'WWW-Authenticate', 'Server-Authorization'],
+        exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
         maxAge: 5,
         credentials: true,
-        allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'User-Agent'],
-        allowMethods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+        allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
+        allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
     }))
+
     //载入中间件
      // 日志中间件
     app.use(Log({
