@@ -12,7 +12,7 @@ ENV NODE_ENV=production
 WORKDIR /app
 
 # 将当前目录内容复制到位于 /app  中的容器中
-ADD . /app
+# ADD . /app
 
 # RUN git push https://github.com/binstd/binstd-service
 # 如果你需要构建生产环境下的代码，请使用：
