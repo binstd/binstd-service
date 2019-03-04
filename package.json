@@ -9,6 +9,9 @@
     "dev": "export NODE_ENV=dev && node app.js",
     "prd": " export NODE_ENV=production && pm2 start app.js --no-daemon"
   },
+  "engines": {
+    "node": "8.11.4"
+  },
   "author": "luz",
   "license": "ISC",
   "dependencies": {
