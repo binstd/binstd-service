@@ -24,17 +24,19 @@ module.exports = (app) => {
     //     allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'User-Agent'],
     //     allowMethods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
     // }))
+    
+    app.use(cors());
 
-    app.use(cors({
-        origin: function (ctx) {
-            return '*'; 
-        },
-        exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-        maxAge: 5,
-        credentials: true,
-        allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
-        allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    }))
+    // app.use(cors({
+    //     origin: function (ctx) {
+    //         return '*'; 
+    //     },
+    //     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+    //     maxAge: 5,
+    //     credentials: true,
+    //     allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
+    //     allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    // }));
 
     //载入中间件
      // 日志中间件
@@ -44,14 +46,14 @@ module.exports = (app) => {
             appLogLevel: 'debug',
             dir: 'logs',
             serverIp: ip.address()
-    }))
+    }));
    
     //载入send中间件
-    app.use(Send())
+    app.use(Send());
     //app.use(apiError())
   
     //载入 bodyparser中间件
-    app.use(bodyParser())
+    app.use(bodyParser());
   
  
   
