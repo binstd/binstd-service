@@ -25,18 +25,23 @@ npm run prd
  **安装docker** 
 
  git clone -b v2 https://github.com/binstd/binstd-service  
+ 
  cd binstd-service/   
+ 
  sudo docker build -t binstd-service .
 
  **运行测试:**
 
- sudo docker run -p 80:3000 binstd-service
- 
+sudo docker run  -v ~/binstd-service/:/app -p 3000:3000 binstd-service
+
+
+
  **正式:**
 
- sudo docker run -d -p 80:3000 binstd-service
- 
- 可自行修改docker的,已安装git和docker想快速部署,复制work.sh的内容即可
+sudo docker run -d -v ~/binstd-service/:/app -p 3000:3000 binstd-service
+
+ 备注：我们让docker环境挂载宿主机的硬盘目录，已便于更新代码。
+ <!-- 可自行修改docker的,已安装git和docker想快速部署,复制work.sh的内容即可 -->
 
 
 ## 核心代码二次开发
@@ -57,3 +62,20 @@ npm run prd
 
 
 
+
+ **安装docker** 
+
+ git clone -b v2 url  djangoapp
+ cd djangoapp/   
+ sudo docker build -t djangoapp .
+
+ **运行测试:**
+
+sudo docker run -d -v ~/xihu-service/:/app -p 80:8000 xihu-service
+
+sudo docker run -d -v ~/react-django-cms/:/app -p 80:8000 djangoapp
+ **正式:**
+
+ sudo docker run -v .:/app  -d -p 80:8000 djangoapp
+ 
+ 可自行修改docker的,已安装git和docker想快速部署,复制work.sh的内容即可
