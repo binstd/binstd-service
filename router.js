@@ -50,6 +50,8 @@ module.exports = (app) => {
     //提交新dapp
     router.post('/api/dapp', ApiController.postDapp)
 
+    router.get('/api/virify/massegecode',  ApiController.getVerifyMassegeCode)
+
     //获取余额
     router.get('/api/chain/balance', /*koajwt({ secret: config.secret }), */ ChainApiController.getbalance)
     

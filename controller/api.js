@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 import Web3 from 'web3';
 import axios from 'axios';
 
+const moment = require('moment');
 const crypto = require('crypto');
 // import config from './utils/config';
 const api_users = sequelize.models.api_users;
@@ -47,8 +48,9 @@ class ApiController {
             if (address.toLowerCase() === publicAddress.toLowerCase()) {
                 return api_users;
             } else {
-                throw new HttpError(constants.HTTP_CODE.UNAUTHORIZED,
-                    `Signature verification failed`);
+                ctx.apierror(ctx.customCode.CONTRACT_ADDRESS_ERROR, '验证失败!')
+                // throw new HttpError(constants.HTTP_CODE.UNAUTHORIZED,
+                //     `Signature verification failed`);
             }
         })
         .then(api_users => {
@@ -238,6 +240,43 @@ class ApiController {
         
         ctx.body = response.data
         // ctx.apidata({response}); 
+    }
+
+
+    async getVerifyMassegeCode(ctx, next) {
+        let rows = {};
+        let paramMsg = {};
+        rows['code'] = Math.random().toString().slice(-6);
+
+        var today = moment();
+        var time = today.format('YYYYMMDDHHmmss'); /*现在的年*/
+
+        let password = 'jhD72SVM';
+        let md5password = crypto.createHash('md5').update(password).digest('hex');
+        let msgpass = crypto.createHash('md5').update(md5password + time).digest('hex');
+  
+        paramMsg['username'] = "proginn1";
+        paramMsg['tkey'] = time;
+        paramMsg['password'] = msgpass;
+        paramMsg['mobile'] = ctx.query.telephone.toString(); 
+        // paramMsg['mobile'] = req.query.telephone;
+        paramMsg['content'] = rows['code'];
+        paramMsg['productid'] = '170831';
+        // console.log(paramMsg);
+        let response = await axios.get("http://www.ztsms.cn/sendNSms.do", {
+            params: paramMsg
+        });
+        console.log('time => ', paramMsg['tkey']);
+        console.log('response => ', response.data);
+  
+        ctx.body = rows;
+        // console.log(':::::=>>>',result[0]);
+        // if(result[0] == 1){
+        //     ctx.body = rows;
+        // }else{
+        //     ctx.body =  result;
+        // }
+       
     }
 }
 
